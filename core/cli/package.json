@@ -1,13 +1,13 @@
 {
-  "name": "@hannan-cli-dev/core",
+  "name": "@hainan-cli-dev/core",
   "version": "1.0.1",
-  "description": "hannan-cli-dev core",
+  "description": "hainan-cli-dev core",
   "author": "小王匠 <wsncoder@163.com>",
   "homepage": "",
   "license": "ISC",
   "main": "lib/index.js",
   "bin": {
-    "hannan-cli-dev": "bin/index.js"
+    "hainan-cli-dev": "bin/index.js"
   },
   "directories": {
     "lib": "lib",
@@ -23,5 +23,5 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "gitHead": "1ff68a6c3425529c347af8ba43890744146b54a1"
+  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887"
 }

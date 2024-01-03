@@ -1,7 +1,7 @@
 {
-  "name": "@hannan-cli-dev/utils",
+  "name": "@hainan-cli-dev/utils",
   "version": "1.0.1",
-  "description": "hannan-cli-dev utils",
+  "description": "hainan-cli-dev utils",
   "author": "小王匠 <wsncoder@163.com>",
   "homepage": "",
   "license": "ISC",
@@ -20,5 +20,5 @@
   "scripts": {
     "test": "echo \"Run testing from utils\""
   },
-  "gitHead": "1ff68a6c3425529c347af8ba43890744146b54a1"
+  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887"
 }
