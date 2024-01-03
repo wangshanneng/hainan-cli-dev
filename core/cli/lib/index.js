@@ -1,7 +1,17 @@
-'use strict';
+"use strict";
 
-module.exports = cli;
+module.exports = core;
 
-function cli() {
-    console.log('我是小王匠');
+const pkg = require("../package.json");
+const log = require('@hainan-cli-dev/log');
+
+function core() {
+  checkPkgVersion();
+}
+
+// 检查版本号
+function checkPkgVersion() {
+  console.log(pkg.version);
+  log()
+  console.log("-------");
 }

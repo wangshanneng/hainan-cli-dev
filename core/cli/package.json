@@ -23,5 +23,9 @@
     "registry": "https://registry.npmjs.org/",
     "access": "public"
   },
-  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887"
+  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887",
+  "dependencies": {
+    "import-local": "^3.1.0",
+    "npmlog": "^7.0.1"
+  }
 }
