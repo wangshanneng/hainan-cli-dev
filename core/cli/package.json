@@ -20,6 +20,7 @@
     "test": "echo \"Run testing from core\""
   },
   "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
     "access": "public"
   }
 }
