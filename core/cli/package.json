@@ -1,0 +1,25 @@
+{
+  "name": "@hannan-cli-dev/core",
+  "version": "0.0.0",
+  "description": "hannan-cli-dev core",
+  "author": "小王匠 <wsncoder@163.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "bin": {
+    "hannan-cli-dev": "bin/index.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Run testing from core\""
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
