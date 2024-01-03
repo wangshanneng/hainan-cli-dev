@@ -19,5 +19,6 @@
   },
   "scripts": {
     "test": "echo \"Run testing from models\""
-  }
+  },
+  "gitHead": "1ff68a6c3425529c347af8ba43890744146b54a1"
 }
