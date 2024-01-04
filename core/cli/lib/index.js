@@ -11,7 +11,5 @@ function core() {
 
 // 检查版本号
 function checkPkgVersion() {
-  console.log(pkg.version);
-  log()
-  console.log("-------");
+  log.notice("cli", pkg.version);
 }
