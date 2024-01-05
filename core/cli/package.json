@@ -26,6 +26,7 @@
   "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887",
   "dependencies": {
     "import-local": "^3.1.0",
-    "npmlog": "^7.0.1"
+    "npmlog": "^7.0.1",
+    "semver": "^7.5.4"
   }
 }
