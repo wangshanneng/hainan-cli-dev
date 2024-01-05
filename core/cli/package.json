@@ -25,8 +25,12 @@
   },
   "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887",
   "dependencies": {
+    "colors": "^1.4.0",
     "import-local": "^3.1.0",
     "npmlog": "^7.0.1",
-    "semver": "^7.5.4"
+    "path-exists": "^4.0.0",
+    "root-check": "^1.0.0",
+    "semver": "^7.5.4",
+    "user-home": "^3.0.0"
   }
 }
