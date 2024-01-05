@@ -2,16 +2,19 @@
 
 module.exports = core;
 
+const path = require("path");
 const color = require("colors/safe");
 const semver = require("semver");
 const userHome = require("user-home");
 const pathExists = require("path-exists").sync;
 
+const constant = require("./const");
 const log = require("@hainan-cli-dev/log");
 
 const pkg = require("../package.json");
 
 const LOWEST_NODE_VERSION = "12.0.0";
+let args, config;
 
 function core() {
   try {
@@ -20,12 +23,40 @@ function core() {
     checkRoot();
     checkUserHome();
     checkInputArgs();
+    checkEnv();
   } catch (error) {
     log.error(error.message);
   }
 }
 
-let args;
+// 检查环境
+function checkEnv() {
+  // 作用是从一个名为 .env 的文件中加载环境变量到 Node.js 的 process.env 对象中
+  const dotenv = require("dotenv");
+  const dotenvPath = path.resolve(userHome, ".env");
+  if (pathExists(dotenvPath)) {
+    config = dotenv.config({
+      path: dotenvPath,
+    });
+  }
+  createDefaultConfig();
+  log.verbose("环境变量", process.env.CLI_HOME_PATH);
+}
+
+// 默认的配置
+function createDefaultConfig() {
+  const cliConfig = {
+    home: userHome,
+  };
+  if (process.env.CLI_HOME) {
+    cliConfig["cliHome"] = path.join(userHome, process.env.CLI_HOME);
+  } else {
+    cliConfig["cliHome"] = path.join(userHome, constant.DEFAULT_CLI_HOME);
+  }
+
+  process.env.CLI_HOME_PATH = cliConfig.cliHome;
+
+}
 
 // 检查入参
 function checkInputArgs(params) {
@@ -46,7 +77,6 @@ function checkArgs() {
 
 // 检查用户名
 function checkUserHome() {
-  console.log(userHome);
   if (!userHome || !pathExists(userHome)) {
     throw new Error(color.red("当前登录用户主目录不存在！"));
   }
