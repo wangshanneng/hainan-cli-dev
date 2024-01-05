@@ -19,9 +19,29 @@ function core() {
     checkNodeVersion();
     checkRoot();
     checkUserHome();
+    checkInputArgs();
   } catch (error) {
     log.error(error.message);
   }
+}
+
+let args;
+
+// 检查入参
+function checkInputArgs(params) {
+  const minimist = require("minimist");
+  args = minimist(process.argv.slice(2));
+  checkArgs();
+}
+
+function checkArgs() {
+  if (args.debug) {
+    process.env.LOG_LEVEL = "verbose";
+  } else {
+    process.env.LOG_LEVEL = "info";
+  }
+
+  log.level = process.env.LOG_LEVEL;
 }
 
 // 检查用户名
