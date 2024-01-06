@@ -14,9 +14,9 @@ const log = require("@hainan-cli-dev/log");
 const pkg = require("../package.json");
 
 const LOWEST_NODE_VERSION = "12.0.0";
-let args, config;
+let args;
 
-function core() {
+async function core() {
   try {
     checkPkgVersion();
     checkNodeVersion();
@@ -24,8 +24,24 @@ function core() {
     checkUserHome();
     checkInputArgs();
     checkEnv();
+    await checkGlobalUpdate();
   } catch (error) {
     log.error(error.message);
+  }
+}
+
+// 检查是否需要全局更新
+async function checkGlobalUpdate() {
+  const currentVersion = pkg.version;
+  const npmName = pkg.name;
+  const { getNpmSemverVersion } = require("@hainan-cli-dev/get-npm-info");
+  const lastVersion = await getNpmSemverVersion(currentVersion, npmName);
+  if (lastVersion && semver.gt(lastVersion, currentVersion)) {
+    log.warn(
+      color.yellow(
+        `请手动更新 ${npmName}, 当前版本: ${currentVersion}, 最新版本: ${lastVersion} , 更新命令: npm install -g ${npmName}`
+      )
+    );
   }
 }
 
@@ -35,7 +51,7 @@ function checkEnv() {
   const dotenv = require("dotenv");
   const dotenvPath = path.resolve(userHome, ".env");
   if (pathExists(dotenvPath)) {
-    config = dotenv.config({
+    dotenv.config({
       path: dotenvPath,
     });
   }
@@ -55,7 +71,6 @@ function createDefaultConfig() {
   }
 
   process.env.CLI_HOME_PATH = cliConfig.cliHome;
-
 }
 
 // 检查入参
