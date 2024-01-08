@@ -7,6 +7,7 @@ const color = require("colors/safe");
 const semver = require("semver");
 const userHome = require("user-home");
 const pathExists = require("path-exists").sync;
+const commander = require("commander");
 
 const constant = require("./const");
 const log = require("@hainan-cli-dev/log");
@@ -16,17 +17,55 @@ const pkg = require("../package.json");
 const LOWEST_NODE_VERSION = "12.0.0";
 let args;
 
+const program = new commander.Command();
+
 async function core() {
   try {
     checkPkgVersion();
     checkNodeVersion();
     checkRoot();
     checkUserHome();
-    checkInputArgs();
+    // checkInputArgs();
     checkEnv();
     await checkGlobalUpdate();
+    registerCommand();
   } catch (error) {
     log.error(error.message);
+  }
+}
+
+// 命令注册
+function registerCommand() {
+  program
+    .name(Object.keys(pkg.bin)[0])
+    .usage("<command> [options]")
+    .version(pkg.version)
+    .option("-d, --debug", "是否开启调试模式", false);
+
+  // 监听debug模式
+  program.on("option:debug", function () {
+    if (program.debug) {
+      process.env.LOG_LEVEL = "verbose";
+    } else {
+      process.env.LOG_LEVEL = "info";
+    }
+    log.level = process.env.LOG_LEVEL;
+  });
+
+  // 未知命令监听
+  program.on("command:*", function (obj) {
+    const availableCommands = program.commands.map((cmd) => cmd.name());
+    log.error(
+      color.red("未知的命令：" + obj[0]),
+      color.red("可用命令：" + availableCommands.join(","))
+    );
+  });
+
+  program.parse(process.argv);
+
+  if (program.args && program.args.length < 1) {
+    program.outputHelp();
+    console.log();
   }
 }
 

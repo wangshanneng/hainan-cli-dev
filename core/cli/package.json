@@ -25,7 +25,10 @@
   },
   "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887",
   "dependencies": {
+    "@hainan-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "@hainan-cli-dev/log": "file:../../utils/log",
     "colors": "^1.4.0",
+    "commander": "^6.2.1",
     "dotenv": "^16.3.1",
     "import-local": "^3.1.0",
     "minimist": "^1.2.8",
