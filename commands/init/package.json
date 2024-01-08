@@ -1,7 +1,7 @@
 {
-  "name": "@hainan-cli-dev/commands",
-  "version": "1.0.2",
-  "description": "hainan-cli-dev commands",
+  "name": "@hainan-cli-dev/init",
+  "version": "1.0.0",
+  "description": "hainan-cli-dev init",
   "author": "小王匠 <wsncoder@163.com>",
   "homepage": "",
   "license": "ISC",

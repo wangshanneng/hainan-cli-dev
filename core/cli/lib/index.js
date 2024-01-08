@@ -11,6 +11,7 @@ const commander = require("commander");
 
 const constant = require("./const");
 const log = require("@hainan-cli-dev/log");
+const init = require("@hainan-cli-dev/init");
 
 const pkg = require("../package.json");
 
@@ -41,6 +42,11 @@ function registerCommand() {
     .usage("<command> [options]")
     .version(pkg.version)
     .option("-d, --debug", "是否开启调试模式", false);
+
+  program
+    .command("init [projectName]")
+    .option("-f, --force", "是否强制初始化项目")
+    .action(init);
 
   // 监听debug模式
   program.on("option:debug", function () {
