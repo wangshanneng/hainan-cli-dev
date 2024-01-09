@@ -1,0 +1,33 @@
+{
+  "name": "@hainan-cli-dev/exec",
+  "version": "1.0.0",
+  "description": "hainan-cli-dev exec",
+  "author": "小王匠 <wsncoder@163.com>",
+  "homepage": "https://github.com/wangshanneng/hannan-cli-dev#readme",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wangshanneng/hannan-cli-dev.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/wangshanneng/hannan-cli-dev/issues"
+  },
+  "dependencies": {
+    "@hainan-cli-dev/package": "file:../../models/package",
+    "@hainan-cli-dev/log": "file:../../utils/log"
+  }
+}

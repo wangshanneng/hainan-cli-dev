@@ -1,7 +1,7 @@
 {
-  "name": "@hainan-cli-dev/models",
+  "name": "@hainan-cli-dev/package",
   "version": "1.0.2",
-  "description": "hainan-cli-dev models",
+  "description": "hainan-cli-dev package",
   "author": "小王匠 <wsncoder@163.com>",
   "homepage": "",
   "license": "ISC",
@@ -20,5 +20,10 @@
   "scripts": {
     "test": "echo \"Run testing from models\""
   },
-  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887"
+  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887",
+  "dependencies": {
+    "@hainan-cli-dev/utils": "file:../../utils/utils",
+    "@hainan-cli-dev/format-path": "file:../../utils/format-path",
+    "pkg-dir": "^5.0.0"
+  }
 }

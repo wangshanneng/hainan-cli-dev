@@ -9,26 +9,20 @@ const userHome = require("user-home");
 const pathExists = require("path-exists").sync;
 const commander = require("commander");
 
-const constant = require("./const");
 const log = require("@hainan-cli-dev/log");
 const init = require("@hainan-cli-dev/init");
+const exec = require("@hainan-cli-dev/exec");
 
+const constant = require("./const");
 const pkg = require("../package.json");
 
 const LOWEST_NODE_VERSION = "12.0.0";
-let args;
 
 const program = new commander.Command();
 
 async function core() {
   try {
-    checkPkgVersion();
-    checkNodeVersion();
-    checkRoot();
-    checkUserHome();
-    // checkInputArgs();
-    checkEnv();
-    await checkGlobalUpdate();
+    await prepare();
     registerCommand();
   } catch (error) {
     log.error(error.message);
@@ -41,12 +35,13 @@ function registerCommand() {
     .name(Object.keys(pkg.bin)[0])
     .usage("<command> [options]")
     .version(pkg.version)
-    .option("-d, --debug", "是否开启调试模式", false);
+    .option("-d, --debug", "是否开启调试模式", false)
+    .option("-tp, --targetPath <targetPath>", "是否指定本地调试文件路径", "");
 
   program
     .command("init [projectName]")
     .option("-f, --force", "是否强制初始化项目")
-    .action(init);
+    .action(exec);
 
   // 监听debug模式
   program.on("option:debug", function () {
@@ -56,6 +51,11 @@ function registerCommand() {
       process.env.LOG_LEVEL = "info";
     }
     log.level = process.env.LOG_LEVEL;
+  });
+
+  // 监听targetPath
+  program.on("option:targetPath", function () {
+    process.env.CLI_TARGET_PATH = program.targetPath;
   });
 
   // 未知命令监听
@@ -73,6 +73,16 @@ function registerCommand() {
     program.outputHelp();
     console.log();
   }
+}
+
+// 准备阶段方法
+async function prepare(params) {
+  checkPkgVersion();
+  checkNodeVersion();
+  checkRoot();
+  checkUserHome();
+  checkEnv();
+  await checkGlobalUpdate();
 }
 
 // 检查是否需要全局更新
@@ -101,7 +111,6 @@ function checkEnv() {
     });
   }
   createDefaultConfig();
-  log.verbose("环境变量", process.env.CLI_HOME_PATH);
 }
 
 // 默认的配置
@@ -116,23 +125,6 @@ function createDefaultConfig() {
   }
 
   process.env.CLI_HOME_PATH = cliConfig.cliHome;
-}
-
-// 检查入参
-function checkInputArgs(params) {
-  const minimist = require("minimist");
-  args = minimist(process.argv.slice(2));
-  checkArgs();
-}
-
-function checkArgs() {
-  if (args.debug) {
-    process.env.LOG_LEVEL = "verbose";
-  } else {
-    process.env.LOG_LEVEL = "info";
-  }
-
-  log.level = process.env.LOG_LEVEL;
 }
 
 // 检查用户名
