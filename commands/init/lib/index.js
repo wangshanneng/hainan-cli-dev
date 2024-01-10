@@ -1,7 +1,7 @@
 "use strict";
 
 function init(projectName, cmdObj) {
-  console.log("process.env.CLI_TARGET_PATH:", process.env.CLI_TARGET_PATH);
+  console.log("init 打印:", projectName, cmdObj.force, process.env.CLI_TARGET_PATH);
 }
 
 module.exports = init;

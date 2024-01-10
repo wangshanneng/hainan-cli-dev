@@ -22,8 +22,10 @@
   },
   "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887",
   "dependencies": {
-    "@hainan-cli-dev/utils": "file:../../utils/utils",
     "@hainan-cli-dev/format-path": "file:../../utils/format-path",
+    "@hainan-cli-dev/utils": "file:../../utils/utils",
+    "@hainan-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "npminstall": "^7.12.0",
     "pkg-dir": "^5.0.0"
   }
 }
