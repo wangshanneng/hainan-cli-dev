@@ -101,20 +101,27 @@ class Package {
 
   // 获取入口文件的路径
   getRootFilePath() {
-    // 1. 获取package.json所在目录
-    const dir = pkgDir(this.targetPath);
+    function _getRootFile(targetPath) {
+      // 1. 获取package.json所在目录
+      const dir = pkgDir(targetPath);
 
-    //2. 读取package.json
-    if (dir) {
-      const pkgFile = require(path.resolve(dir, "package.json"));
-      // 3. 寻找main/lib
-      if (pkgFile && pkgFile.main) {
-        // 4. 路径的兼容（macOS/windows）
-        return formatPath(path.resolve(dir, pkgFile.main));
+      //2. 读取package.json
+      if (dir) {
+        const pkgFile = require(path.resolve(dir, "package.json"));
+        // 3. 寻找main/lib
+        if (pkgFile && pkgFile.main) {
+          // 4. 路径的兼容（macOS/windows）
+          return formatPath(path.resolve(dir, pkgFile.main));
+        }
       }
-    }
 
-    return null;
+      return null;
+    }
+    if (this.storeDir) {
+      return _getRootFile(this.cacheFilePath); // 返回缓存文件路径下的入口文件路径
+    } else {
+      return _getRootFile(this.targetPath);
+    }
   }
 }
 
