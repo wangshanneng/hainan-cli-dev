@@ -1,12 +1,17 @@
 "use strict";
 
 const path = require("path");
-const pkgDir = require("pkg-dir");
+const pkgDir = require("pkg-dir").sync;
 const npminstall = require("npminstall");
+const pathExists = require("path-exists").sync;
+const fse = require("fs-extra");
 
 const { isObject } = require("@hainan-cli-dev/utils");
 const formatPath = require("@hainan-cli-dev/format-path");
-const { getDefaultRegistry } = require("@hainan-cli-dev/get-npm-info");
+const {
+  getDefaultRegistry,
+  getNpmLatestVersion,
+} = require("@hainan-cli-dev/get-npm-info");
 
 class Package {
   constructor(options) {
@@ -24,14 +29,48 @@ class Package {
     this.packageName = options.packageName;
     // package 的版本
     this.packageVersion = options.packageVersion;
+    // package 的缓存目录前缀
+    this.cacheFilePathPrefix = this.packageName.replace("/", "_");
+  }
+
+  async prepare() {
+    if (this.storeDir && !pathExists(this.storeDir)) {
+      // 创建路径
+      fse.mkdirpSync(this.storeDir);
+    }
+    if (this.packageVersion === "latest") {
+      this.packageVersion = await getNpmLatestVersion(this.packageName);
+    }
   }
 
   // package 是否存在
-  exists() {}
+  async exists() {
+    if (this.storeDir) {
+      await this.prepare();
+      return pathExists(this.cacheFilePath);
+    } else {
+      return pathExists(this.targetPath);
+    }
+  }
+
+  get cacheFilePath() {
+    return path.resolve(
+      this.storeDir,
+      `_${this.cacheFilePathPrefix}@${this.packageVersion}@${this.packageName}`
+    );
+  }
+
+  getSpecificCacheFilePath(packageVersion) {
+    return path.resolve(
+      this.storeDir,
+      `_${this.cacheFilePathPrefix}@${packageVersion}@${this.packageName}`
+    );
+  }
 
   // 安装package
-  install() {
-    npminstall({
+  async install() {
+    await this.prepare();
+    return npminstall({
       root: this.targetPath,
       stroDir: this.storeDir,
       registry: getDefaultRegistry(),
@@ -40,12 +79,30 @@ class Package {
   }
 
   // 更新packege
-  update() {}
+  async update() {
+    await this.prepare();
+    console.log("更新");
+    // 1. 获取最新的npm模块版本号
+    const latestpPackageVersion = await getNpmLatestVersion(this.packageName);
+    // 2. 查询最新版本号对应的路径是否存在
+    const latestFilePath = this.getSpecificCacheFilePath(latestpPackageVersion);
+    // 3. 如果不存在，直接安装最新版本
+    if (!pathExists(latestFilePath)) {
+      await npminstall({
+        root: this.targetPath,
+        storeDir: this.storeDir,
+        registry: getDefaultRegistry(),
+        pkgs: [{ name: this.packageName, version: latestpPackageVersion }],
+      });
+      // TODO: 注意更新
+      this.packageVersion = latestpPackageVersion;
+    }
+  }
 
   // 获取入口文件的路径
   getRootFilePath() {
     // 1. 获取package.json所在目录
-    const dir = pkgDir.sync(this.targetPath);
+    const dir = pkgDir(this.targetPath);
 
     //2. 读取package.json
     if (dir) {

@@ -11,7 +11,7 @@ const SETTINGS = {
 
 const CACHE_DIR = "dependencies";
 
-function exec() {
+async function exec() {
   let targetPath = process.env.CLI_TARGET_PATH;
   const homePath = process.env.CLI_HOME_PATH;
   let storeDir = "";
@@ -23,7 +23,7 @@ function exec() {
   const cmdObj = arguments[arguments.length - 1];
   const cmdName = cmdObj.name();
   const packageName = SETTINGS[cmdName];
-  const packageVersion = "latest";
+  const packageVersion = "1.1.0";
 
   if (!targetPath) {
     targetPath = path.resolve(homePath, CACHE_DIR); // 生成缓存路径
@@ -40,11 +40,12 @@ function exec() {
       packageVersion,
     });
 
-    if (pkg.exists()) {
+    if (await pkg.exists()) {
       // 更新package
+      pkg.update()
     } else {
       // 安装package
-      pkg.install();
+      await pkg.install();
     }
   } else {
     pkg = new Package({
@@ -55,10 +56,9 @@ function exec() {
   }
 
   const rootFile = pkg.getRootFilePath();
-
-  require(rootFile).apply(null, arguments);
-
-  console.log("入口文件路径：", pkg.getRootFilePath());
+  if (rootFile) {
+    require(rootFile).apply(null, arguments);
+  }
 }
 
 module.exports = exec;
