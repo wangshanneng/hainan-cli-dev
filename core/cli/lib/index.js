@@ -16,8 +16,6 @@ const exec = require("@hainan-cli-dev/exec");
 const constant = require("./const");
 const pkg = require("../package.json");
 
-const LOWEST_NODE_VERSION = "12.0.0";
-
 const program = new commander.Command();
 
 async function core() {
@@ -78,7 +76,6 @@ function registerCommand() {
 // 准备阶段方法
 async function prepare(params) {
   checkPkgVersion();
-  checkNodeVersion();
   checkRoot();
   checkUserHome();
   checkEnv();
@@ -140,16 +137,6 @@ function checkRoot() {
   rootCheck();
 }
 
-// 检查Node版本号
-function checkNodeVersion() {
-  const currentVersion = process.version;
-  const lowestVersion = LOWEST_NODE_VERSION;
-  if (!semver.gte(currentVersion, lowestVersion)) {
-    throw new Error(
-      `hainan-cli-dev 需要安装 v${lowestVersion} 以上版本的 Node.js`
-    );
-  }
-}
 
 // 检查版本号
 function checkPkgVersion() {

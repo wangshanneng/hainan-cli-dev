@@ -20,5 +20,9 @@
   "scripts": {
     "test": "echo \"Run testing from commands\""
   },
-  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887"
+  "gitHead": "775914fbac3d2f8275bac138b21b122b50ef3887",
+  "dependencies": {
+    "@hainan-cli-dev/command": "file:../../models/command",
+    "@hainan-cli-dev/log": "file:../../utils/log"
+  }
 }
